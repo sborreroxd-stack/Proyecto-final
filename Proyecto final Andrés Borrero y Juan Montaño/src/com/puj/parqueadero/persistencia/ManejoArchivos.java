@@ -27,19 +27,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lee y escribe archivos. No imprime nada en pantalla: devuelve textos
- * y quien la usa (Consola) decide como mostrarlos.
- */
+
 public class ManejoArchivos {
 
-    // Formato de fecha y hora de Movimientos.txt
     private static final DateTimeFormatter FORMATO_FECHA_HORA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    /**
-     * Lee Mensualidades.txt (placa*inicio*fin). Una linea con error no detiene
-     * la carga: se informa con su numero de linea y se sigue con la siguiente.
-     */
+ 
     public List<String> cargarMensualidades(String ruta, IParqueadero sistema) throws IOException {
         List<String> resultado = new ArrayList<String>();
 
@@ -48,7 +41,7 @@ public class ManejoArchivos {
             int numeroLinea = 0;
 
             while ((linea = lector.readLine()) != null) {
-                numeroLinea++;                       // cuenta TODAS las lineas, tambien blancos y comentarios
+                numeroLinea++;                       
                 String texto = linea.trim();
                 if (texto.length() > 0 && !texto.startsWith("#")) {
                     try {
@@ -73,10 +66,7 @@ public class ManejoArchivos {
         return resultado;
     }
 
-    /**
-     * Lee Movimientos.txt y aplica en orden las entradas (E*placa*tipo*fecha hora)
-     * y las salidas (S*placa*fecha hora*convenio).
-     */
+
     public List<String> procesarMovimientos(String ruta, IParqueadero sistema) throws IOException {
         List<String> resultado = new ArrayList<String>();
 
@@ -125,7 +115,6 @@ public class ManejoArchivos {
         return resultado;
     }
 
-    /** Escribe cada linea del reporte en el archivo (por ejemplo Cierre_2026-03-02.txt). */
     public void exportarReporte(List<String> lineas, String ruta) throws IOException {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(ruta))) {
             for (String linea : lineas) {
@@ -135,24 +124,17 @@ public class ManejoArchivos {
         }
     }
 
-    /** Guarda el sistema completo (tiquetes, mensualidades y consecutivo) con serializacion. */
     public void guardarSistema(IParqueadero sistema, String ruta) throws IOException {
         try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(ruta))) {
             salida.writeObject(sistema);
         }
     }
 
-    /** Recupera el sistema guardado. Quien llama debe reemplazar su referencia por la devuelta. */
     public IParqueadero cargarSistema(String ruta) throws IOException, ClassNotFoundException {
         try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ruta))) {
             return (IParqueadero) entrada.readObject();
         }
     }
-
-    // ------------------------------------------------------------------
-    // Conversion de texto a objetos. Un dato mal escrito se rechaza con
-    // una excepcion propia para que la linea se informe y la carga siga.
-    // ------------------------------------------------------------------
 
     private Vehiculo crearVehiculo(String tipo, String placa) throws ParqueaderoException {
         String t = tipo.toUpperCase();
