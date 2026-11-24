@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Unica clase que lee del teclado y escribe en pantalla.
- * Llega al negocio solo por IParqueadero y atrapa las excepciones para mostrar su mensaje.
- */
 public class Consola {
 
     private IParqueadero sistema;
@@ -157,7 +153,7 @@ public class Consola {
                     System.out.println("Sistema guardado en sistema.dat");
 
                 } else if (opcion == 9) {
-                    consola.sistema = archivos.cargarSistema("sistema.dat");   // se reemplaza la referencia
+                    consola.sistema = archivos.cargarSistema("sistema.dat");  
                     System.out.println("Sistema recuperado de sistema.dat");
 
                 } else if (opcion == 0) {
